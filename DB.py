@@ -44,35 +44,37 @@ class Apartment:
 Names=['Emma','Rechel','Monica','Chandler','Joey','Phoebe','Ross']
 Ages=['1','32','32','32','32','31','34']
 Genders=['Female','Female','Female','Male','Male','Female','Male']
+
+def marriedRelationship(a_name,b_name):
+    session = graphdb.session()
+    session.run("MATCH ("+a_name+":person {name:'"+a_name+"'}), ("+b_name+":person {name:'"+b_name+"'})"
+                "MERGE ("+a_name+")-[:married_to]->("+b_name+")")
+    for node in nodes:
+         print(node)
+
+def Lives_inRelationship(name,num):
+    session = graphdb.session()
+    session.run("MATCH (" + name + ":person {name:'" + name + "'}), ("+num+":Apartment {number:'" + num + "'})"
+                "MERGE (" + name + ")-[:Lives_in]->(" + num + ")")
+Lives_inRelationship("Chandler","19")
+def reset_db():
+    "Remove all nodes and relationships from the database"
+    session=graphdb.session()
+    session.run('MATCH (n) DETACH DELETE n')
+
+#reset_db()
 '''
 for i in range(len(Names)):
     CreatPersonNode(Person(Names[i],Ages[i],Genders[i]))
 Number_Apartments=['19','20','Nan','Nan']
 for i in range(len(Number_Apartments)):
     CreatApartmentNode(Apartment(Number_Apartments[i]))
+
+marriedRelationship("Monica","Chandler")
+
+marriedRelationship("Chandler","Monica")
 '''
-def  marriedRelationship(a_name,b_name):
-     session = graphdb.session()
-     q2="MATCH(a:person{'"+a_name+"'}),(a:person{'"+b_name+"'})"
-     session.run(q2)
-     q3 = "MERGE(" + q1 + ")-[m1:married_to]->(" + q2 + ")"
-     nodes = session.run(q3)
-     for node in nodes:
-         print(node)
-
-
-def create_friendship(a_name, b_name):
-    session = graphdb.session()
-    q1 = "MERGE(MATCH(a:person{'" + a_name + "'}),(a:person{'" + b_name + "'})) return a,b"
-    nodes = session.run(q1)
-    for node in nodes:
-        print(node)
-
-create_friendship("Monica","Chandler")
-
 '''
-def Live_inRelationship:
-    "ff"
 def ParentRelationship:
 
 def SiblingRelationship:
