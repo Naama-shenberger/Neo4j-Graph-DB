@@ -9,7 +9,8 @@ graphdb=GraphDatabase.driver(uri="bolt://localhost:7687",auth=("neo4j","Naamais1
 
 #Data
 Apartment_numbers=['19','20','Nan','Nan']
-Names=['Emma','Rechel','Monica','Chandler','Joey','Phoebe','Ross']
+Names=['Emma','Rechel','Monica','Chandler','Joey','Phebe','Ross']
+Last_names=['Green','Green','Geller','Bing','Tribbiani','Buffay','Geller']
 Ages=['1','32','32','32','32','31','34']
 Genders=['Female','Female','Female','Male','Male','Female','Male']
 
@@ -42,7 +43,7 @@ def reset_db():
 reset_db()
 object_list=[]#A list of all objects so that they are easy to access
 for i in range(len(Names)):
-    p=Person(Names[i],Ages[i],Genders[i])#Build an object person type
+    p=Person(Names[i],Last_names[i],Ages[i],Genders[i])#Build an object person type
     p.key="_"+str(id(p))#A unique number is assigned to a key field
     object_list.append(p)
     CreatPersonNode(p)#Creat Node type Person
