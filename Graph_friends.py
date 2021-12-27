@@ -1,5 +1,3 @@
-
-#https://neo4j.com/developer/cypher/querying/
 from Person import Person
 from Apartment import Apartment
 from Person import CreatPersonNode
