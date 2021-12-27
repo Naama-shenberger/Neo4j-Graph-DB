@@ -7,3 +7,4 @@ RETURN Apartment.number
 #3 We would like to know what friendships and to who Ross has
 MATCH (a:person {name:'Ross'})-[r]-(b)
 RETURN type(r), a, b
+
