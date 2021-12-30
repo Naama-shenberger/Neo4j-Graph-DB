@@ -3,7 +3,6 @@ from Person import Person
 from Person import createPersonNode
 from Apartment import Apartment
 from Apartment import createApartmentNode
-from neo4j import GraphDatabase
 
 # Connection to neo4j driver connection
 from driver_connection import graphdb
