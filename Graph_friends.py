@@ -4,7 +4,6 @@ from Person import CreatPersonNode
 from Apartment import CreatApartmentNode
 from neo4j import GraphDatabase
 #uri = "bolt://localhost:7687"
-
 from uri import graphdb
 #Data
 Apartment_numbers=['19','20','Nan','Nan']
