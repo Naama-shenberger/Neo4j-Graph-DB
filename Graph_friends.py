@@ -3,8 +3,9 @@ from Apartment import Apartment
 from Person import CreatPersonNode
 from Apartment import CreatApartmentNode
 from neo4j import GraphDatabase
-graphdb=GraphDatabase.driver(uri="bolt://localhost:7687",auth=("neo4j","Naamais12"))
+#uri = "bolt://localhost:7687"
 
+from uri import graphdb
 #Data
 Apartment_numbers=['19','20','Nan','Nan']
 Names=['Emma','Rechel','Monica','Chandler','Joey','Phebe','Ross']
@@ -53,18 +54,21 @@ for i in range(len(Apartment_numbers)):
     CreatApartmentNode(a)#Creat Node type Apartment
 
 '''Calling functions'''
+print("marriedRelationship")
 marriedRelationship(object_list[2].key,object_list[3].key)
 marriedRelationship(object_list[3].key,object_list[2].key)
-
+print("living Relationship")
 livingRelationship(object_list[1].key,object_list[8].key)
 livingRelationship(object_list[5].key,object_list[10].key)
 livingRelationship(object_list[6].key,object_list[9].key)
 livingRelationship(object_list[2].key,object_list[8].key)
 livingRelationship(object_list[3].key,object_list[7].key)
+print("living Relationship last")
 livingRelationship(object_list[4].key,object_list[7].key)
-
+print("sibling Relationship")
 siblingRelationship(object_list[6].key,object_list[2].key)
 siblingRelationship(object_list[2].key,object_list[6].key)
 
 parentRelationship(object_list[6].key,object_list[0].key)
 parentRelationship(object_list[1].key,object_list[0].key)
+graphdb.close()

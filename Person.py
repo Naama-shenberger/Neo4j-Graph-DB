@@ -1,7 +1,9 @@
 '''Connection to database neo4j'''
 from neo4j import GraphDatabase
-graphdb=GraphDatabase.driver(uri="bolt://localhost:7687",auth=("neo4j","Naamais12"))
-
+#uri = "bolt://localhost:7687"
+uri = "neo4j+s://1d0a616c.databases.neo4j.io"
+#graphdb=GraphDatabase.driver(uri,auth=("neo4j","gmnnjaal3rzkRdOuAD8QHN1EAwwyzhNMiid85MTIN0c"))
+from uri import graphdb
 class Person:
     '''class person'''
     def __init__(self, name,last_name ,age,gender,key=-1):
@@ -19,3 +21,4 @@ def CreatPersonNode(p):
      session.run(q1)
     else:
         print("The parameter you submitted is not person-type object")
+#graphdb.close()
