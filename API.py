@@ -43,20 +43,18 @@ def relationshipType(name, movie):
         return str(e)
 
 
-@api.route("/birth_place/<string:birth_place>", methods=["GET"])
-def placeBirth(birth_place):
+@api.route("/born/<int:born>", methods=["GET"])
+def placeBirth(born):
     try:
-        """A function that gets a birth place and returns the names of people who were born in that place (using an indexer)"""
-        session.run("""CREATE (p:Person {name: 'Alan Ruck',born:'1956',birth_place:'USA'})"""
-                    """MATCH (p:Person), (m:Movie)
-                       WHERE p.name = "Alan Ruck" and m.title = "Twister"
-                       CREATE (p)-[a:ACTED_IN]->(m)"""
-                    """CREATE INDEX ON :Person(birth_place)""", birth_place=birth_place)
+        """A function that gets a born year and returns the names of People born that year (using an indexer)
+        There is an index used but in principle it is used when there are different property nodes
+        """
+        session.run("""CREATE INDEX myIndex IF NOT EXISTS FOR (p:Person) ON (p.born)""",born=born)
         results = session.run("""MATCH (n:Person)
-       USING INDEX n:Person(birth_place)
-       WHERE n.birth_place = $birth_place
+       USING INDEX n:Person(born)
+       WHERE n.born = $born
        RETURN n.name
-        """, birth_place=birth_place)
+        """, born=born)
         data = results.data()
         return jsonify(data)
     except Exception as e:
