@@ -44,7 +44,7 @@ def relationshipType(name, movie):
 
 
 @api.route("/born/<int:born>", methods=["GET"])
-def placeBirth(born):
+def born_year(born):
     try:
         """A function that gets a born year and returns the names of People born that year (using an indexer)
         There is an index used but in principle it is used when there are different property nodes
