@@ -7,7 +7,7 @@ session = driver.session()
 api = Flask(__name__)
 
 
-@api.route("/reviewed", methods=["GET", "POST"])
+@api.route("/reviewed", methods=["GET"])
 def reviewedMoives():
     """A function that returns all nodes that have reviewed connection """
     try:
@@ -19,7 +19,7 @@ def reviewedMoives():
         return str(e)
 
 
-@api.route("/movie name/<string:movie_name>", methods=["GET", "POST"])
+@api.route("/movie_name/<string:movie_name>", methods=["GET"])
 def actor(movie_name):
     """A function that receive a movie name and returns the actors who played in the movie (in a alphabet order)"""
     try:
@@ -31,7 +31,7 @@ def actor(movie_name):
         return str(e)
 
 
-@api.route("/MATCH/<string:name>&<string:movie>", methods=["GET", "POST"])
+@api.route("/MATCH/<string:name>&<string:movie>", methods=["GET"])
 def relationshipType(name, movie):
     """A function that receives a movie name and name and returns the type of connection between the nodes"""
     try:
@@ -43,7 +43,7 @@ def relationshipType(name, movie):
         return str(e)
 
 
-@api.route("/birth place/<string:birth_place>", methods=["GET", "POST"])
+@api.route("/birth_place/<string:birth_place>", methods=["GET"])
 def placeBirth(birth_place):
     try:
         """A function that gets a birth place and returns the names of people who were born in that place (using an indexer)"""
@@ -54,7 +54,7 @@ def placeBirth(birth_place):
                     """CREATE INDEX ON :Person(birth_place)""", birth_place=birth_place)
         results = session.run("""MATCH (n:Person)
        USING INDEX n:Person(birth_place)
-       WHERE n.place_birth = $birth_place
+       WHERE n.birth_place = $birth_place
        RETURN n.name
         """, birth_place=birth_place)
         data = results.data()

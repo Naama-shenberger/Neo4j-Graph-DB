@@ -7,4 +7,4 @@ ADD Apartment.py .
 
 RUN pip install neo4j
 
-CMD ["python","./GraphFriends.py"]
+CMD ["python","./Graph_friends.py"]
