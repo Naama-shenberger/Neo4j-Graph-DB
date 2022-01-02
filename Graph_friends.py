@@ -1,11 +1,13 @@
-# Link to files
+# import to files
 from Person import Person
 from Person import createPersonNode
 from Apartment import Apartment
 from Apartment import createApartmentNode
 
-# Connection to neo4j driver connection
+# neo4j driver connection
 from driver_connection import graphdb
+
+session = graphdb.session()
 
 # Data
 Apartment_numbers = ['19', '20', 'Nan', 'Nan']
@@ -17,40 +19,35 @@ Genders = ['Female', 'Female', 'Female', 'Male', 'Male', 'Female', 'Male']
 
 def marriedRelationship(a_key, b_key):
     """A function that receives two nodes keys and connects the two nodes in a married relationship"""
-    session = graphdb.session()
     session.run("MATCH (a:person {key: $a_key}), (b:person {key: $b_key})"
                 "MERGE (a)-[:married_to]->(b)", a_key=a_key, b_key=b_key)
 
 
 def livingRelationship(a_key, b_key):
-    """A function that receives two nodes keys and connects the two nodes in a Living together relationship"""
-    session = graphdb.session()
+    """A function that receives two nodes keys and connects the two nodes in a Lives in relationship"""
     session.run("MATCH (a:person {key: $a_key}), (b:Apartment {key: $b_key})"
                 "MERGE (a)-[:Lives_in]->(b)", a_key=a_key, b_key=b_key)
 
 
 def siblingRelationship(a_key, b_key):
     """A function that receives two nodes keys and connects the two nodes in a sibling relationship"""
-    session = graphdb.session()
     session.run("MATCH (a:person {key: $a_key}), (b:person {key: $b_key})"
                 "MERGE (a)-[:Sibling]->(b)", a_key=a_key, b_key=b_key)
 
 
 def parentRelationship(a_key, b_key):
     """A function that receives two nodes keys and connects the two nodes in a parent relationship"""
-    session = graphdb.session()
     session.run("MATCH (a:person {key: $a_key}), (b:person {key: $b_key})"
                 "MERGE (a)-[:Parent_of]->(b)", a_key=a_key, b_key=b_key)
 
 
 def reset_db():
     """Remove all nodes and relationships from the database"""
-    session = graphdb.session()
     session.run('MATCH (n) DETACH DELETE n')
 
 
 reset_db()  # reset data base
-object_list = []  # A list of all objects so that they are easy to access
+object_list = []  # A list of all objects
 for i in range(len(Names)):
     p = Person(Names[i], Last_names[i], Ages[i], Genders[i])  # Build an object person type
     p.key = "_" + str(id(p))  # A unique number is assigned to a key field
@@ -63,8 +60,8 @@ for i in range(len(Apartment_numbers)):
     object_list.append(a)
     createApartmentNode(a)  # Create Node type Apartment
 
-'''Createing a relationship'''
-print("marriedRelationship")
+'''Creating a relationship'''
+print("married Relationship")
 marriedRelationship(object_list[2].key, object_list[3].key)
 marriedRelationship(object_list[3].key, object_list[2].key)
 
@@ -83,4 +80,5 @@ siblingRelationship(object_list[2].key, object_list[6].key)
 print("parent of Relationship")
 parentRelationship(object_list[6].key, object_list[0].key)
 parentRelationship(object_list[1].key, object_list[0].key)
+
 graphdb.close()  # close the driver connection

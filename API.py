@@ -1,14 +1,15 @@
-from flask import Flask,jsonify
+from flask import Flask, jsonify
 from neo4j import GraphDatabase
 
-driver = GraphDatabase.driver(uri="bolt://54.236.55.139:7687", auth=("neo4j","wingnuts-ringing-ponds" ))
+# neo4j driver connection
+driver = GraphDatabase.driver(uri="bolt://54.236.55.139:7687", auth=("neo4j", "wingnuts-ringing-ponds"))
 session = driver.session()
 api = Flask(__name__)
 
 
-@api.route("/reviewed")
+@api.route("/reviewed", methods=["GET", "POST"])
 def reviewedMoives():
-    """A function that returns the nodes where there is a reviewed connection """
+    """A function that returns all nodes that have reviewed connection """
     try:
         results = session.run("MATCH (p:Person)-[r:REVIEWED]-(m:Movie) return p,r,m")
         data = results.data()
@@ -20,7 +21,7 @@ def reviewedMoives():
 
 @api.route("/movie name/<string:movie_name>", methods=["GET", "POST"])
 def actor(movie_name):
-    """A function gets a movie name and returns the actors who played in the movie (in a alphabet order)"""
+    """A function that receive a movie name and returns the actors who played in the movie (in a alphabet order)"""
     try:
         results = session.run("""MATCH(m: Movie {title:$movie_name}) < -[: ACTED_IN]-(actor) RETURN  actor.name order by 
         actor.name """, movie_name=movie_name)
@@ -42,16 +43,20 @@ def relationshipType(name, movie):
         return str(e)
 
 
-@api.route("/Place birth/<string:place_birth>", methods=["GET", "POST"])
-def placeBirth(place_birth):
+@api.route("/birth place/<string:birth_place>", methods=["GET", "POST"])
+def placeBirth(birth_place):
     try:
-        """A function that gets a place birth and returns the names of people who were born in that place (using an indexer)"""
-        session.run("""CREATE INDEX ON :Person(place_birth)""", place_birth=place_birth)
+        """A function that gets a birth place and returns the names of people who were born in that place (using an indexer)"""
+        session.run("""CREATE (p:Person {name: 'Alan Ruck',born:'1956',birth_place:'USA'})"""
+                    """MATCH (p:Person), (m:Movie)
+                       WHERE p.name = "Alan Ruck" and m.title = "Twister"
+                       CREATE (p)-[a:ACTED_IN]->(m)"""
+                    """CREATE INDEX ON :Person(birth_place)""", birth_place=birth_place)
         results = session.run("""MATCH (n:Person)
-       USING INDEX n:Person(place_birth)
-       WHERE n.place_birth = $place_birth
+       USING INDEX n:Person(birth_place)
+       WHERE n.place_birth = $birth_place
        RETURN n.name
-        """, place_birth=place_birth)
+        """, birth_place=birth_place)
         data = results.data()
         return jsonify(data)
     except Exception as e:
@@ -60,5 +65,3 @@ def placeBirth(place_birth):
 
 if __name__ == "__main__":
     api.run(debug=True)
-
-
