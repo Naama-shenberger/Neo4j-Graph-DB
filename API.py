@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from neo4j import GraphDatabase
 
 # neo4j driver connection
-driver = GraphDatabase.driver(uri="bolt://54.236.55.139:7687", auth=("neo4j", "wingnuts-ringing-ponds"))
+driver = GraphDatabase.driver(uri="neo4j+s://241d6714.databases.neo4j.io", auth=("neo4j", "HGJllEezu-I2CAKQtKzDZItuzG-8DeyU7Ly0QnayMzo"))
 session = driver.session()
 api = Flask(__name__)
 
