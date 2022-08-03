@@ -9,6 +9,7 @@ The graph shows relationships and types of relationships between nodes.
 There are 2 types of nodes: 
   - Apartment - Apartment.py
   - person - Person.py
+  
 I created a class for each type of node.
 - Graph_friends.py - Creating connections between nodes 
 - API.py - Creating an interface to the graph
